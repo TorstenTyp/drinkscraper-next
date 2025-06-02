@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body 
-      className={`${merriweather.className} antialiased bg-slate-50`}
+      className={`${merriweather.className} antialiased bg-slate-100`}
       >{children}</body>
     </html>
   );
