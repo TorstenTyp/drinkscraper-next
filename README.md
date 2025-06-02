@@ -1,6 +1,6 @@
 # Drink Scraper
 
-A Next.js application for displaying over 8000 cocktails cards gathered trough scrapers in an infinate scroll layout. A cocktail card displays the name of the drink, an image, it's ingredients and where it was scraped from. Clicking on the card takes you to the recipe.
+A Next.js application displaying over 8,000 cocktails gathered through scrapers displayed in an infinite scroll layout. Each cocktail is presented trough a card displaying an image, its name, its ingredients, and where it was scraped from. Clicking on the card takes you to the recipe.
 
-### Find cocktails
-Cocktails can be found by searching for it's name, and/or it's ingredients trough a tag-based search.
+## Find cocktails
+Cocktails can be found by searching for their name and/or their ingredients through a tag-based search.
