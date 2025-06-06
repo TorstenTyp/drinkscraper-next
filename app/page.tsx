@@ -1,21 +1,21 @@
+'use client'
 import Card from "@/app/ui/components/card";
-import { Cocktail } from "./lib/definitions";
-import { mocktails } from '@/app/lib/mockdata'
 import Input from "./ui/components/input";
-import { getTwentyCocktails } from "./lib/data";
+import { useActionState } from "react";
+import { searchForCocktailsAction } from "./lib/actions";
 
-export default async function Home() {
+export default function Page() {
 
-  const cocktails: Cocktail[] = await getTwentyCocktails()
-
+  const [state, formAction, isPending] = useActionState(searchForCocktailsAction, null)
+  
   return (
     <div>
       <header className="bg-white">
         <h1 className="font-bold text-4xl p-4 pl-8 pt-8">Drink Scraper</h1>
-        <Input/>
+        <Input action={formAction} isPending={isPending} />
       </header>
       <div className="flex flex-wrap grid-cols-fill justify-center gap-4 p-4">
-        {cocktails.map(cocktail => (
+        {state?.response?.map(cocktail => (
           <Card cocktail={{
             ...cocktail
           }} key={cocktail.ID} />))
