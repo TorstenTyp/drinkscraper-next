@@ -18,7 +18,7 @@ const config = {
 export async function getTwentyCocktails() {
     try {
         await sql.connect(config);
-        const result = await sql.query(`SELECT TOP 20 * FROM cocktails ORDER BY NEWID()`);
+        const result = await sql.query(`SELECT TOP 20 * FROM cocktails ORDER BY NEWID()`);        
         return result.recordset;
     } catch (err) {
         console.error(err);

@@ -17,7 +17,6 @@ interface SearchResult {
 export async function getInitialCocktailsAction(): Promise<SearchResult> {
     try {
         const response = await getTwentyCocktails()
-        if (!response.ok) throw new Error('Error while fetching cocktails')
         return { success: true, response }
     } catch (error) {
         return { success: false, error }
@@ -32,7 +31,8 @@ export async function searchForCocktailsAction(prevState: SearchResult | null, f
     }
 
     try {
-        const response = await GetCocktailsByName(searchString.toString())
+        const input = searchString.toString()
+        const response = await GetCocktailsByName(input)
         return { success: true, response }
     } catch (error) {
         return { success: false, error }
