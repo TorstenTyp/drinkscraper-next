@@ -18,7 +18,7 @@ const config = {
 export async function getTwentyCocktails() {
     try {
         await sql.connect(config);
-        const result = await sql.query(`SELECT TOP 20 * FROM cocktails ORDER BY NEWID()`);        
+        const result = await sql.query(`SELECT TOP 20 * FROM cocktails ORDER BY NEWID()`);
         return result.recordset;
     } catch (err) {
         console.error(err);
@@ -27,10 +27,25 @@ export async function getTwentyCocktails() {
     }
 }
 
-export async function GetCocktailsByName(searchString: string | undefined) {
+export async function GetCocktailsByNameAndIngredients(name: string | undefined, ingredients: string[]) {
     try {
         await sql.connect(config);
-        const result = await sql.query(`SELECT TOP 20 * FROM cocktails WHERE Name LIKE '%${searchString?.trim()}%'`);
+        let result;
+
+        if (!name && ingredients.length === 0) {
+            throw new Error("Either name or ingredients must be provided.");
+        }
+        
+        if (name && ingredients.length === 0) {
+            result = await sql.query(`SELECT TOP 20 * FROM cocktails WHERE Name LIKE '%${name.trim()}%'`);
+        } else if (!name && ingredients.length > 0) {
+            const ingredientConditions = ingredients.map(ingredient => `Ingredients LIKE '%${ingredient.trim()}%'`).join(' AND ');
+            result = await sql.query(`SELECT TOP 20 * FROM cocktails WHERE ${ingredientConditions}`);
+        } else {
+            const ingredientConditions = ingredients.map(ingredient => `Ingredients LIKE '%${ingredient.trim()}%'`).join(' AND ');
+            result = await sql.query(`SELECT TOP 20 * FROM cocktails WHERE Name LIKE '%${name?.trim()}%' AND ${ingredientConditions}`);
+        }
+
         return result.recordset;
     } catch (err) {
         console.error(err);

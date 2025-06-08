@@ -1,5 +1,5 @@
 'use server'
-import { GetCocktailsByName, getTwentyCocktails } from "./data";
+import { GetCocktailsByNameAndIngredients, getTwentyCocktails } from "./data";
 
 interface SearchResult {
     success?: boolean;
@@ -24,15 +24,13 @@ export async function getInitialCocktailsAction(): Promise<SearchResult> {
 }
 
 export async function searchForCocktailsAction(prevState: SearchResult | null, formData: FormData): Promise<SearchResult> {
-    const searchString = formData.get('nameSearch');
-    
-    if (!searchString) {
-        return { error: 'Input required for search' }
-    }
+    const name = formData.get('name');
+    const nameString = name?.toString()
+    const ingredients = formData.get('tags');;
+    const ingredientArray = ingredients ? ingredients.toString().split(',') : [];
 
     try {
-        const input = searchString.toString()
-        const response = await GetCocktailsByName(input)
+        const response = await GetCocktailsByNameAndIngredients(nameString, ingredientArray)
         return { success: true, response }
     } catch (error) {
         return { success: false, error }
