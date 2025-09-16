@@ -1,8 +1,12 @@
 'use server'
+
+import { mocktails } from "./mockdata";
+
 const sql = require('mssql')
 require('dotenv').config();
 
 const config = {
+    mode: process.env.MODE,
     trustServerCertificate: process.env.DB_TRUST_SERVER_CERTIFICATE,
     server: process.env.DB_SERVER,
     database: process.env.DB_NAME,
@@ -16,6 +20,9 @@ const config = {
 }
 
 export async function getTwentyCocktails() {
+    if (config.mode === 'mock'){
+        return getLocalMocktails()
+    }
     try {
         await sql.connect(config);
         const result = await sql.query(`SELECT TOP 20 * FROM cocktails ORDER BY NEWID()`);
@@ -45,11 +52,16 @@ export async function GetCocktailsByNameAndIngredients(name: string | undefined,
             const ingredientConditions = ingredients.map(ingredient => `Ingredients LIKE '%${ingredient.trim()}%'`).join(' AND ');
             result = await sql.query(`SELECT TOP 20 * FROM cocktails WHERE Name LIKE '%${name?.trim()}%' AND ${ingredientConditions}`);
         }
-
         return result.recordset;
+
     } catch (err) {
         console.error(err);
     } finally {
-        sql.close();
+            sql.close();
     }
+
+}
+
+export async function getLocalMocktails(){
+    return mocktails;
 }
