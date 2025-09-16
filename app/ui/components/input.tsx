@@ -10,7 +10,9 @@ export default function Input({ action, isPending }: SearchFormProps) {
     const [inputValue, setInputValue] = useState('');
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(e.target.value);
+        if (e.target.value.length <= 15) {
+            setInputValue(e.target.value);
+        }
     };
 
     const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -27,37 +29,50 @@ export default function Input({ action, isPending }: SearchFormProps) {
 
     return (
         <form action={action} className="items-center justify-center flex p-4 shadow-xl">
-            <div className="flex flex-col w-[90vw]">
-                <input
-                    name="name"
-                    className="bg-slate-200 h-[5vh] border-black rounded-lg text-lg m-2 p-4"
-                    placeholder="Search for a cocktail"
-                />
-                <div className="bg-slate-200 h-[5vh] border-black rounded-lg text-lg m-2 flex flex-wrap items-center justify-center">
-                    {tags.map((tag, index) => (
-                        <div key={index} className="bg-slate-300 rounded-md px-2 py-1 m-1 flex">
-                            {tag}
-                            <button type="button" onClick={() => removeTag(index)} className="ml-2 text-sm">
-                                &times;
-                            </button>
-                        </div>
-                    ))}
+            <div className="flex flex-col sm:flex-row gap-2 w-full pl-4 pr-4">
+                <div className="flex-1 space-y-2">
                     <input
-                        name="ingredients"
-                        className="flex-grow h-[5vh] bg-slate-200 pl-4 rounded-lg text-lg outline-none"
-                        placeholder="Add ingredients"
-                        value={inputValue}
-                        onChange={handleInputChange}
-                        onKeyDown={handleInputKeyDown}
+                        name="name"
+                        type="text"
+                        className="w-full p-2 border rounded bg-slate-200 outline-none"
+                        placeholder="Search for a cocktail"
                     />
+                    <div className="bg-slate-200 rounded flex items-center max-h-10 overflow-x-auto no-scrollbar">
+                        <div className="flex flex-nowrap">
+                            {tags.map((tag, index) => (
+                                <div key={index} className="bg-slate-300 rounded-md px-2 py-1 m-1 flex items-center whitespace-nowrap">
+                                    {tag}
+                                    <button
+                                        type="button"
+                                        onClick={() => removeTag(index)}
+                                        className="ml-2 text-sm hover:text-red-500"
+                                    >
+                                        &times;
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                        <input
+                            name="ingredients"
+                            type={tags.length > 4 ? "hidden" : "text"}
+                            placeholder={tags.length > 0 ? "" : "Add ingredients"}
+                            className="flex-shrink-0 w-full p-2 border-none bg-slate-200 outline-none"
+                            value={inputValue}
+                            onChange={handleInputChange}
+                            onKeyDown={handleInputKeyDown}
+                        />
+                    </div>
                 </div>
-            </div>
-            <input name='tags' value={tags} type='hidden'></input>
-            <div className="bg-slate-200 flex flex-col w-[10vw] h-[12vh] rounded-md">
-                <button className="h-full" type="submit" disabled={isPending}>
+                <input name='tags' value={tags} type='hidden' />
+                <button
+                    className="hidden sm:block p-2 bg-slate-200 rounded hover:bg-gray-600"
+                    type="submit"
+                    disabled={isPending}
+                >
                     Search
                 </button>
             </div>
         </form>
     );
-}
+};
+
