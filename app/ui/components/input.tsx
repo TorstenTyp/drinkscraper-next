@@ -59,10 +59,10 @@ export default function Input({ action, isPending }: SearchFormProps) {
                         </div>
                         <input
                             name="ingredients"
-                            type={tags.length > 4 ? "hidden" : "text"}
+                            type="text"
                             placeholder={tags.length > 0 ? "" : "Add ingredients"}
                             className="ingredients-input"
-                            maxLength={15}
+                            maxLength={tags.length > 4 ? 0 : 15}
                             value={inputValue}
                             onChange={handleInputChange}
                             onKeyDown={handleInputKeyDown}
