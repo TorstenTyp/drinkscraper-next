@@ -22,10 +22,10 @@ export default function Page() {
   return (
     <div>
       <header className="bg-white">
-        <h1 className="font-bold text-4xl pl-8 pt-8">Drink Scraper</h1>
+        <h1 className="title">Drink Scraper</h1>
         <Input action={formAction} isPending={isPending} />
       </header>
-      <div className="flex flex-wrap grid-cols-fill justify-center gap-4 p-4">
+      <div className="cards">
         {(state?.response || initialCocktails)?.map(cocktail => (
           <Card cocktail={{ ...cocktail }} key={cocktail.ID} />
         ))}

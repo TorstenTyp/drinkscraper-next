@@ -4,6 +4,7 @@ import { Cocktail } from '@/app/lib/definitions';
 export default function Card({ cocktail }: { cocktail: Cocktail }) {
   return (
     <a className="w-[45vw] h-[35vh] flex bg-white rounded-lg shadow-xl overflow-hidden p-[0.5vw] m-[1vw]"
+      target="_blank" rel="noopener noreferrer"
       href={cocktail.Link} >
       <div className="w-1/3 bg-blue-100 p-[1.5vw] relative items-center m-[0.5vw] rounded-md">
         <div className="text-center">
