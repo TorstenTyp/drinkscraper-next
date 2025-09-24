@@ -1,22 +1,24 @@
 'use client'
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Card from "@/app/ui/components/card";
 import Input from "./ui/components/input";
 import { useActionState } from "react";
 import { getInitialCocktailsAction, searchForCocktailsAction } from "./lib/actions";
 import { Cocktail } from "./lib/definitions";
+import CardSkeleton from "./ui/components/skeletons/cardSkeleton";
 
 export default function Page() {
   const [initialCocktails, setInitialCocktails] = useState<Cocktail[]>([]);
   const [state, formAction, isPending] = useActionState(searchForCocktailsAction, null);
+  const [isLoading, setIsLoading] = useState(true); //TODO: Refaktorera den här röran
 
   useEffect(() => {
     const fetchInitialCocktails = async () => {
-      const data = await getInitialCocktailsAction();      
+      const data = await getInitialCocktailsAction();
       setInitialCocktails(data?.response || []);
     };
 
-    fetchInitialCocktails();
+    fetchInitialCocktails().then(() => setIsLoading(false));
   }, []);
 
   return (
@@ -26,10 +28,18 @@ export default function Page() {
         <Input action={formAction} isPending={isPending} />
       </header>
       <div className="cards">
-        {(state?.response || initialCocktails)?.map(cocktail => (
-          <Card cocktail={{ ...cocktail }} key={cocktail.ID} />
-        ))}
+        {isLoading ? (
+          <CardSkeleton /> 
+        ) : (
+          (state?.response ?? initialCocktails)?.map((cocktail) => (
+            <Card
+              key={cocktail.ID}
+              cocktail={cocktail}
+            />
+          ))
+        )}
       </div>
+
     </div>
   );
 }
