@@ -1,5 +1,5 @@
 'use client'
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "@/app/ui/components/card";
 import Input from "./ui/components/input";
 import { useActionState } from "react";
@@ -29,7 +29,7 @@ export default function Page() {
       </header>
       <div className="cards">
         {isLoading ? (
-          <CardSkeleton /> 
+          <CardSkeleton />
         ) : (
           (state?.response ?? initialCocktails)?.map((cocktail) => (
             <Card
@@ -39,7 +39,6 @@ export default function Page() {
           ))
         )}
       </div>
-
     </div>
   );
 }
