@@ -23,14 +23,9 @@ export async function getInitialCocktailsAction(): Promise<SearchResult> {
     }
 }
 
-export async function searchForCocktailsAction(prevState: SearchResult | null, formData: FormData): Promise<SearchResult> {
-    const name = formData.get('name');
-    const nameString = name?.toString()
-    const ingredients = formData.get('tags');;
-    const ingredientArray = ingredients ? ingredients.toString().split(',') : [];
-
+export async function searchForCocktailsAction(name: string | null | undefined, ingredients: string[]): Promise<SearchResult> {
     try {
-        const response = await GetCocktailsByNameAndIngredients(nameString, ingredientArray)
+        const response = await GetCocktailsByNameAndIngredients(name || '', ingredients)
         return { success: true, response }
     } catch (error) {
         return { success: false, error }

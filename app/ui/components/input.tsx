@@ -1,26 +1,60 @@
-import React, { useState } from 'react';
+'use client'
+
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 interface SearchFormProps {
-    action: (formData: FormData) => void;
+    action: (name: string, ingredients: string[]) => void;
     isPending: boolean;
 }
 
 export default function Input({ action, isPending }: SearchFormProps) {
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const { replace } = useRouter();
     const [tags, setTags] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState('');
+    const [inputValueName, setInputValueName] = useState('');
+
+    useEffect(() => {
+        const name = searchParams.get('name') || '';
+        const ingredients = searchParams.get('ingredients')?.split(',').filter(Boolean) || [];
+        setInputValueName(name);
+        setTags(ingredients);
+    }, [searchParams]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
     };
 
+    const handleSubmit = () => {
+        const params = new URLSearchParams(searchParams);
+        if (inputValueName) {
+            params.set('name', inputValueName);
+        } else {
+            params.delete('name');
+        }
+        if (tags.length > 0) {
+            params.set('ingredients', tags.join(','));
+        } else {
+            params.delete('ingredients');
+        }
+        replace(`${pathname}?${params.toString()}`);
+        action(inputValueName, tags);
+    };
+
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValueName(e.target.value);
+    };
+
     const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter' || e.key === ' ' && inputValue.trim() !== '') {
+        if ((e.key === 'Enter' || e.key === ' ') && inputValue.trim() !== '') {
             e.preventDefault();
             setTags([...tags, inputValue.trim()]);
             setInputValue('');
         }
-        if (e.key === 'Backspace' && inputValue.length === 0){
-            removeTag(tags.length - 1)
+        if (e.key === 'Backspace' && inputValue.length === 0) {
+            setTags(tags.slice(0, -1));
         }
     };
 
@@ -29,18 +63,16 @@ export default function Input({ action, isPending }: SearchFormProps) {
     };
 
     return (
-        <form
-            action={action}
-            className="form-container"
-        >
+        <div className="form-container">
             <div className="form-inner-container">
                 <div className="input-section">
                     <input
-                        name="name"
                         type="text"
                         className="search-input"
                         placeholder="Search for a cocktail"
                         maxLength={50}
+                        onChange={handleNameChange}
+                        value={inputValueName}
                     />
                     <div className="tags-container">
                         <div className="tags-list">
@@ -58,7 +90,6 @@ export default function Input({ action, isPending }: SearchFormProps) {
                             ))}
                         </div>
                         <input
-                            name="ingredients"
                             type="text"
                             placeholder={tags.length > 0 ? "" : "Add ingredients"}
                             className="ingredients-input"
@@ -69,16 +100,16 @@ export default function Input({ action, isPending }: SearchFormProps) {
                         />
                     </div>
                 </div>
-                <input name='tags' value={tags} type='hidden' />
                 <button
                     className="submit-button"
-                    type="submit"
+                    onClick={handleSubmit}
+                    type="button"
                     disabled={isPending}
                 >
                     Search
                 </button>
             </div>
-        </form>
+        </div>
     );
 };
 

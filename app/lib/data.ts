@@ -44,13 +44,13 @@ export async function GetCocktailsByNameAndIngredients(name: string | undefined,
         }
         
         if (name && ingredients.length === 0) {
-            result = await sql.query(`SELECT TOP 20 * FROM cocktails WHERE Name LIKE '%${name.trim()}%'`);
+            result = await sql.query(`SELECT TOP 100 * FROM cocktails WHERE Name LIKE '%${name.trim()}%'`);
         } else if (!name && ingredients.length > 0) {
             const ingredientConditions = ingredients.map(ingredient => `Ingredients LIKE '%${ingredient.trim()}%'`).join(' AND ');
-            result = await sql.query(`SELECT TOP 20 * FROM cocktails WHERE ${ingredientConditions}`);
+            result = await sql.query(`SELECT TOP 100 * FROM cocktails WHERE ${ingredientConditions}`);
         } else {
             const ingredientConditions = ingredients.map(ingredient => `Ingredients LIKE '%${ingredient.trim()}%'`).join(' AND ');
-            result = await sql.query(`SELECT TOP 20 * FROM cocktails WHERE Name LIKE '%${name?.trim()}%' AND ${ingredientConditions}`);
+            result = await sql.query(`SELECT TOP 100 * FROM cocktails WHERE Name LIKE '%${name?.trim()}%' AND ${ingredientConditions}`);
         }
         return result.recordset;
 
