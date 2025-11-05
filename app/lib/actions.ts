@@ -1,4 +1,5 @@
 'use server'
+
 import { GetCocktailsByNameAndIngredients, getTwentyCocktails } from "./data";
 
 interface SearchResult {

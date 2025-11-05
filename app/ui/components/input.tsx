@@ -47,8 +47,23 @@ export default function Input({ action, isPending }: SearchFormProps) {
         setInputValueName(e.target.value);
     };
 
+    const handleNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSubmit();
+        }
+    };
+
     const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if ((e.key === 'Enter' || e.key === ' ') && inputValue.trim() !== '') {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (inputValue.trim() !== '') {
+                setTags([...tags, inputValue.trim()]);
+                setInputValue('');
+            } else {
+                handleSubmit();
+            }
+        } else if (e.key === ' ' && inputValue.trim() !== '') {
             e.preventDefault();
             setTags([...tags, inputValue.trim()]);
             setInputValue('');
@@ -72,6 +87,7 @@ export default function Input({ action, isPending }: SearchFormProps) {
                         placeholder="Search for a cocktail"
                         maxLength={50}
                         onChange={handleNameChange}
+                        onKeyDown={handleNameKeyDown}
                         value={inputValueName}
                     />
                     <div className="tags-container">
