@@ -114,6 +114,8 @@
     border-radius: 0.25rem;
     border: none;
     cursor: pointer;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 
 @media (min-width: 640px) {
