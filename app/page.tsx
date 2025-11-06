@@ -19,14 +19,14 @@ export default function Page() {
       setIsLoading(true);
       const name = searchParams.get('name');
       const ingredients = searchParams.get('ingredients')?.split(',').filter(Boolean) || [];
-      
+
       let data;
       if (name || ingredients.length > 0) {
         data = await searchForCocktailsAction(name, ingredients);
       } else {
         data = await getInitialCocktailsAction();
       }
-      
+
       setCocktails(data?.response || []);
       setIsLoading(false);
     };
@@ -44,7 +44,13 @@ export default function Page() {
   return (
     <div>
       <header className="bg-white">
-        <h1 className="title">Drink Scraper</h1>
+        <h1 className="title"><a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = window.location.pathname;
+          }}
+        >Drink Scraper</a></h1>
         <Input action={handleSearch} isPending={isPending} />
       </header>
       <div className="cards">
