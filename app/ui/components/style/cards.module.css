@@ -34,7 +34,7 @@
 }
 
 .cards--header {
-    height: 30%;
+    height: 40%;
     padding: 1vw 0;
     display: flex;
     align-items: center;
@@ -45,13 +45,11 @@
     font-weight: 600;
     font-size: 5vw;
     text-align: center;
-    margin: 0;
 }
 
 .cards--ingredients {
     height: 50%;
     padding: 1vw 0;
-    /* display: flex; */
     align-items: center;
     justify-content: flex-start;
 }
@@ -100,9 +98,9 @@
 }
 
 .skeleton-lines {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .shimmer {
@@ -128,7 +126,7 @@
     }
 
     .cards--header {
-        height: 20%;
+        height: 25%;
         padding: 1vw;
     }
 
