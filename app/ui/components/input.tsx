@@ -28,19 +28,26 @@ export default function Input({ action, isPending }: SearchFormProps) {
     };
 
     const handleSubmit = () => {
+        const updatedTags = [...tags];
+        if (inputValue.trim() !== '') {
+            updatedTags.push(inputValue.trim());
+            setTags(updatedTags);
+            setInputValue('');
+        }
+
         const params = new URLSearchParams(searchParams);
         if (inputValueName) {
             params.set('name', inputValueName);
         } else {
             params.delete('name');
         }
-        if (tags.length > 0) {
-            params.set('ingredients', tags.join(','));
+        if (updatedTags.length > 0) {
+            params.set('ingredients', updatedTags.join(','));
         } else {
             params.delete('ingredients');
         }
         replace(`${pathname}?${params.toString()}`);
-        action(inputValueName, tags);
+        action(inputValueName, updatedTags);
     };
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
