@@ -1,8 +1,12 @@
 import Image from 'next/image';
+import React from 'react';
 import { Cocktail } from '@/app/lib/definitions';
 import styles from './style/cards.module.css';
 
 export default function Card({ cocktail }: { cocktail: Cocktail }) {
+  const [imgSrc, setImgSrc] = React.useState(cocktail.Image);
+  const placeholder = require('../fallback_cocktail.jpg');
+
   return (
     <a
       className={styles['cards--container']}
@@ -12,10 +16,11 @@ export default function Card({ cocktail }: { cocktail: Cocktail }) {
     >
       <div className={styles['cards--image-container']}>
         <Image
-          src={cocktail.Image}
+          src={imgSrc}
           alt="Cocktail"
           fill
           className={styles['cards--image']}
+          onError={() => setImgSrc(placeholder)}
         />
       </div>
       <div className={styles['cards--content']}>
