@@ -4,14 +4,14 @@ import { GetCocktailsByNameAndIngredients, getTwentyCocktails } from "./data";
 
 interface SearchResult {
     success?: boolean;
-    response?: [{
+    response?: Array<{
         ID: number,
         Name: string,
         Image: string,
         Link: string,
         Ingredients: string,
         Source: string
-    }];
+    }>;
     error?: unknown;
 }
 

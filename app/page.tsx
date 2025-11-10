@@ -13,6 +13,7 @@ export default function Page() {
   const [cocktails, setCocktails] = useState<Cocktail[]>([]);
   const [isPending, setIsPending] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   useEffect(() => {
     const fetchInitial = async () => {
@@ -33,6 +34,27 @@ export default function Page() {
 
     fetchInitial();
   }, [searchParams]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 300 &&
+        !isLoading && !isFetchingMore && cocktails.length > 0
+      ) {
+        fetchMoreCocktails();
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isLoading, isFetchingMore, cocktails]);
+
+  const fetchMoreCocktails = async () => {
+    setIsFetchingMore(true);
+    const data = await getInitialCocktailsAction();
+    const newCocktails = data?.response ?? [];
+    setCocktails(prev => [...prev, ...newCocktails]);
+    setIsFetchingMore(false);
+  };
 
   const handleSearch = async (name: string, ingredients: string[]) => {
     setIsPending(true);
@@ -57,15 +79,18 @@ export default function Page() {
         {isLoading ? (
           <CardSkeleton />
         ) : cocktails.length > 0 ? (
-          cocktails.map((cocktail: Cocktail) => (
-            <Card
-              key={cocktail.ID}
-              cocktail={cocktail}
-            />
-          ))
+          <>
+            {cocktails.map((cocktail: Cocktail) => (
+              <Card
+                key={cocktail.ID + Math.random()}
+                cocktail={cocktail}
+              />
+            ))}
+            {isFetchingMore && <CardSkeleton />}
+          </>
         ) : (
           <div className="w-full text-center p-8 text-gray-500">
-            .. I think you just created a new cocktail
+            ..I think you just created a new cocktail
           </div>
         )}
       </div>
