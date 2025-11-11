@@ -21,14 +21,16 @@ export default function Page() {
       const name = searchParams.get('name');
       const ingredients = searchParams.get('ingredients')?.split(',').filter(Boolean) || [];
 
-      let data;
       if (name || ingredients.length > 0) {
-        data = await searchForCocktailsAction(name, ingredients);
+        const data = await searchForCocktailsAction(name, ingredients);
+        setCocktails(data?.response || []);
       } else {
-        data = await getInitialCocktailsAction();
+        // Show mocktails instantly, then fetch real data
+        const { mocktails } = await import('./lib/mockdata');
+        setCocktails(mocktails);
+        const data = await getInitialCocktailsAction();
+        setCocktails(prev => [...prev, ...(data?.response ?? [])]);
       }
-
-      setCocktails(data?.response || []);
       setIsLoading(false);
     };
 
