@@ -5,7 +5,7 @@ import styles from './style/cards.module.css';
 
 export default function Card({ cocktail }: { cocktail: Cocktail }) {
   const [imgSrc, setImgSrc] = React.useState(cocktail.Image);
-  const placeholder = require('../fallback_cocktail.jpg');
+  const fallbackCocktail = require('../fallback_cocktail.jpg');
 
   return (
     <a
@@ -17,10 +17,10 @@ export default function Card({ cocktail }: { cocktail: Cocktail }) {
       <div className={styles['cards--image-container']}>
         <Image
           src={imgSrc}
-          alt="Cocktail"
+          alt="Picture of a cocktail"
           fill
           className={styles['cards--image']}
-          onError={() => setImgSrc(placeholder)}
+          onError={() => setImgSrc(fallbackCocktail)}
         />
       </div>
       <div className={styles['cards--content']}>
