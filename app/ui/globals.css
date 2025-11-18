@@ -118,6 +118,14 @@
     padding-right: 2%;
 }
 
+.newTabIcon {
+    fill: #6b7280;
+    width: 0.7rem;
+    height: 0.7rem;
+    margin-left: 0.25rem;
+    cursor: pointer;
+}
+
 @media (min-width: 640px) {
 
     .title {
