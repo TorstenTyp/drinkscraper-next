@@ -28,7 +28,7 @@ const nextConfig = {
             },
         ],
     },
-    assetPrefix: process.env.NODE_ENV === 'production' ? 'https://drinkscraper.com' : undefined,
+    assetPrefix: process.env.NODE_ENV === undefined,
 };
 
 module.exports = nextConfig;
