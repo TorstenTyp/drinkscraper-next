@@ -1,7 +1,32 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['assets-prd.punchdrink.com', 'cdn.diffords.com', 'cdn.shortpixel.ai', 'www.liquor.com', 'iba-world.com', 'cdn.diffordsguide.com'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'assets-prd.punchdrink.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'cdn.diffords.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'cdn.shortpixel.ai',
+            },
+            {
+                protocol: 'https',
+                hostname: 'www.liquor.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'iba-world.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'cdn.diffordsguide.com',
+            },
+        ],
     },
 };
 

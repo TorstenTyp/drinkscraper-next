@@ -3,12 +3,21 @@
 import { useEffect, useState } from "react";
 import Card from "@/app/ui/components/card";
 import Input from "./ui/components/input";
+import { Suspense } from 'react';
 import { useSearchParams } from "next/navigation";
 import { getInitialCocktailsAction, searchForCocktailsAction } from "./lib/actions";
 import { Cocktail } from "./lib/definitions";
 import CardSkeleton from "./ui/components/skeletons/cardSkeleton";
 
 export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PageContent />
+    </Suspense>
+  );
+}
+
+function PageContent() {
   const searchParams = useSearchParams();
   const [cocktails, setCocktails] = useState<Cocktail[]>([]);
   const [isPending, setIsPending] = useState(false);
