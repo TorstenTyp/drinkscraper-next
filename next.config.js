@@ -28,7 +28,6 @@ const nextConfig = {
             },
         ],
     },
-    assetPrefix: process.env.NODE_ENV === undefined,
 };
 
 module.exports = nextConfig;
