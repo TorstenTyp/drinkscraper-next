@@ -1,0 +1,23 @@
+{
+    "routes": [
+        {
+            "route": "/_next/static/*",
+            "serve": "/_next/static/",
+            "allowedRoles": [
+                "anonymous"
+            ]
+        },
+        {
+            "route": "/_next/data/*",
+            "allowedRoles": [
+                "anonymous"
+            ]
+        },
+        {
+            "route": "/api/*",
+            "allowedRoles": [
+                "anonymous"
+            ]
+        }
+    ]
+}

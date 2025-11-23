@@ -42,8 +42,9 @@
     margin-bottom: 0.5rem;
 }
 
-.input-section, select {
-  font-size: 10px !important;
+.input-section,
+select {
+    font-size: 10px !important;
 }
 
 .search-input {
@@ -76,8 +77,9 @@
     -ms-overflow-style: none;
 }
 
-.tags-container, select {
-  font-size: 9px !important;
+.tags-container,
+select {
+    font-size: 9px !important;
 }
 
 .tags-container::-webkit-scrollbar {
@@ -166,6 +168,11 @@
         gap: 0.5rem;
         font-size: 15px;
         margin-bottom: 0rem;
+    }
+
+    .input-section,
+    select {
+        font-size: 15px !important;
 
     }
 
@@ -201,6 +208,11 @@
         -ms-overflow-style: none;
     }
 
+    .tags-container,
+    select {
+        font-size: 15px !important;
+    }
+
     .tags-container::-webkit-scrollbar {
         display: none;
     }
@@ -221,14 +233,6 @@
         display: flex;
         items-center: center;
         white-space: nowrap;
-    }
-
-    .tag-remove-button {
-        margin-left: 0.25rem;
-        font-size: 0.875rem;
-        background: none;
-        border: none;
-        cursor: pointer;
     }
 }
 
