@@ -42,6 +42,10 @@
     margin-bottom: 0.5rem;
 }
 
+.input-section, select {
+  font-size: 10px !important;
+}
+
 .search-input {
     width: 100%;
     height: 1.5rem;
@@ -72,6 +76,10 @@
     -ms-overflow-style: none;
 }
 
+.tags-container, select {
+  font-size: 9px !important;
+}
+
 .tags-container::-webkit-scrollbar {
     display: none;
 }
@@ -91,18 +99,6 @@
     margin: 0.25rem;
     display: flex;
     white-space: nowrap;
-}
-
-.tag-remove-button {
-    margin-left: 0.25rem;
-    font-size: 0.450rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.tag-remove-button:hover {
-    color: #ef4444;
 }
 
 .submit-button {
