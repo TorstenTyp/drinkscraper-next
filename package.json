@@ -11,6 +11,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "node": "^20",
     "dotenv": "^17.2.3",
     "env-cmd": "^11.0.0",
     "mssql": "^12.1.0",
@@ -30,5 +31,8 @@
     "eslint-config-next": "16.0.3",
     "postcss": "^8.5.4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "node": "^20"
   }
 }
