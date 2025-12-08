@@ -19,7 +19,9 @@ export default function Card({ cocktail }: { cocktail: Cocktail }) {
           src={imgSrc}
           alt="Picture of a cocktail"
           fill
-          sizes='40%'
+          sizes='30%'
+          loading="lazy"
+          quality={75}
           className={styles['cards--image']}
           onError={() => setImgSrc(fallbackCocktail)}
         />
