@@ -11,7 +11,6 @@ interface SearchFormProps {
 export default function Input({ action, isPending }: SearchFormProps) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
-    const { replace } = useRouter();
     const [tags, setTags] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState('');
     const [inputValueName, setInputValueName] = useState('');
@@ -35,19 +34,14 @@ export default function Input({ action, isPending }: SearchFormProps) {
             setInputValue('');
         }
 
-        const params = new URLSearchParams(searchParams);
+        const params = new URLSearchParams();
         if (inputValueName) {
             params.set('name', inputValueName);
-        } else {
-            params.delete('name');
         }
         if (updatedTags.length > 0) {
             params.set('ingredients', updatedTags.join(','));
-        } else {
-            params.delete('ingredients');
         }
-        replace(`${pathname}?${params.toString()}`);
-        action(inputValueName, updatedTags);
+        window.history.replaceState({}, '', `${pathname}?${params.toString()}`);
     };
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

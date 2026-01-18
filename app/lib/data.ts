@@ -2,66 +2,62 @@
 
 import { mocktails } from "./mockdata";
 
-const sql = require('mssql')
+import pg from 'pg';
 require('dotenv').config();
 
+const { Pool } = pg;
+
 const config = {
-    mode: process.env.MODE,
-    trustServerCertificate: process.env.DB_TRUST_SERVER_CERTIFICATE,
-    server: process.env.DB_SERVER,
-    database: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PW,
-    port: parseInt(process.env.DB_PORT || '1433', 10),
-    options: {
-        encrypt: process.env.DB_ENCRYPT === 'true',
-        requestTimeout: parseInt(process.env.DB_REQUEST_TIMEOUT || '30000', 10),
-    },
-}
+    connectionString: process.env.DATABASE_URL,
+    connectionTimeoutMillis: parseInt(process.env.DB_REQUEST_TIMEOUT || '30000', 10),
+    mode: process.env.MODE || 'live',
+};
+
+const pool = new Pool(config);
 
 export async function getTwentyCocktails() {
-    if (config.mode === 'mock'){
-        return getLocalMocktails()
+    if (config.mode === 'mock') {
+        return getLocalMocktails();
     }
     try {
-        await sql.connect(config);
-        const result = await sql.query(`SELECT TOP 20 * FROM cocktails ORDER BY NEWID()`);
-        return result.recordset;
+        const result = await pool.query('SELECT * FROM cocktails ORDER BY RANDOM() LIMIT 20');
+        return result.rows;
     } catch (err) {
-        console.error(err);
-    } finally {
-        sql.close();
+        console.error('Error fetching cocktails:', err);
+        throw err;
     }
 }
 
 export async function GetCocktailsByNameAndIngredients(name: string | undefined, ingredients: string[]) {
     try {
-        await sql.connect(config);
-        let result;
-
         if (!name && ingredients.length === 0) {
             throw new Error("Either name or ingredients must be provided.");
         }
-        
+
+        let queryText: string;
+        let queryParams: any[] = [];
+
         if (name && ingredients.length === 0) {
-            result = await sql.query(`SELECT TOP 100 * FROM cocktails WHERE Name LIKE '%${name.trim()}%' ORDER BY LEN(Name)`);
+            queryText = 'SELECT * FROM cocktails WHERE name ILIKE $1 ORDER BY LENGTH(name) LIMIT 100';
+            queryParams = [`%${name.trim()}%`];
         } else if (!name && ingredients.length > 0) {
-            const ingredientConditions = ingredients.map(ingredient => `Ingredients LIKE '%${ingredient.trim()}%'`).join(' AND ');
-            result = await sql.query(`SELECT TOP 100 * FROM cocktails WHERE ${ingredientConditions} ORDER BY LEN(Name)`);
+            const ingredientConditions = ingredients.map((_, index) => `ingredients ILIKE $${index + 1}`).join(' AND ');
+            queryText = `SELECT * FROM cocktails WHERE ${ingredientConditions} ORDER BY LENGTH(name) LIMIT 100`;
+            queryParams = ingredients.map(ingredient => `%${ingredient.trim()}%`);
         } else {
-            const ingredientConditions = ingredients.map(ingredient => `Ingredients LIKE '%${ingredient.trim()}%'`).join(' AND ');
-            result = await sql.query(`SELECT TOP 100 * FROM cocktails WHERE Name LIKE '%${name?.trim()}%' AND ${ingredientConditions} ORDER BY LEN(Name)`);
+            const ingredientConditions = ingredients.map((_, index) => `ingredients ILIKE $${index + 2}`).join(' AND ');
+            queryText = `SELECT * FROM cocktails WHERE name ILIKE $1 AND ${ingredientConditions} ORDER BY LENGTH(name) LIMIT 100`;
+            queryParams = [`%${name?.trim()}%`, ...ingredients.map(ingredient => `%${ingredient.trim()}%`)];
         }
-        return result.recordset;
 
+        const result = await pool.query(queryText, queryParams);
+        return result.rows;
     } catch (err) {
-        console.error(err);
-    } finally {
-            sql.close();
+        console.error('Error fetching cocktails by name/ingredients:', err);
+        throw err;
     }
-
 }
 
-export async function getLocalMocktails(){
+export async function getLocalMocktails() {
     return mocktails;
 }

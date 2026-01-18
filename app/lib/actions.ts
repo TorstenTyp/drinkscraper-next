@@ -5,12 +5,12 @@ import { GetCocktailsByNameAndIngredients, getTwentyCocktails } from "./data";
 interface SearchResult {
     success?: boolean;
     response?: Array<{
-        ID: number,
-        Name: string,
-        Image: string,
-        Link: string,
-        Ingredients: string,
-        Source: string
+        id: number,
+        name: string,
+        image: string,
+        link: string,
+        ingredients: string,
+        source: string
     }>;
     error?: unknown;
 }

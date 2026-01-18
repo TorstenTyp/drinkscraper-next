@@ -1,8 +1,8 @@
 export type Cocktail = {
-    ID: number;
-    Name: string;
-    Image: string;
-    Link: string;
-    Ingredients: string;
-    Source: string;
+    id: number;
+    name: string;
+    image: string;
+    link: string;
+    ingredients: string;
+    source: string;
   };

@@ -91,7 +91,7 @@ function PageContent() {
           <>
             {cocktails.map((cocktail: Cocktail) => (
               <Card
-                key={cocktail.ID + Math.random()}
+                key={cocktail.id + Math.random()}
                 cocktail={cocktail}
               />
             ))}
