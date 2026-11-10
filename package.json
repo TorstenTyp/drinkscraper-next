@@ -2,6 +2,7 @@
   "name": "drinkscraper-nextjs",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.7.0",
   "scripts": {
     "dev": "next dev --turbopack",
     "dev:mock": "env-cmd -f .env.mock next dev",
@@ -33,6 +34,7 @@
     "typescript": "^5"
   },
   "engines": {
-    "node": "^20.9.0"
+    "node": "^25.1.1",
+    "pnpm": "10.7.0"
   }
 }
